@@ -1,0 +1,63 @@
+name: "ghcr.io Container Cleanup"
+description: 'A GitHub Action that cleans up old ghcr.io Containers'
+branding:
+  icon: 'package'
+  color: 'orange'
+inputs:
+  packages_token:
+    description: 'A github token with the read:packages, write:packages and delete:packages permissions'
+    required: true
+  keep_versions:
+    description: 'The minimum amount of versions to keep'
+    required: false
+    default: 30
+  minimum_days:
+    description: 'The minimum age (in days) that an image has to be untouched'
+    required: false
+    default: 14
+  package_name:
+    description: 'Name of the package (e.g. for "ghcr.io/example/container" the packageName is "container")'
+    required: true
+  owner_name:
+    description: 'Name of the owner (e.g. for "ghcr.io/example/container" the ownerName is "example")'
+    retuired: true
+runs:
+  using: "composite"
+  steps:
+    - name: Delete images from ghcr.io
+      uses: actions/github-script@v3
+      env:
+        KEEP_VERSIONS: ${{ inputs.keep_versions }}
+        MINIMUM_DAYS: ${{ inputs.minimum_days }}
+        PACKAGE: ${{ inputs.package_name }}
+        OWNER: ${{ inputs.owner_name }}
+      with:
+        github-token: ${{ inputs.packages_token }}
+        script: |
+          const minimumAge = new Date(new Date().setDate(new Date().getDate() - ${{ env.MINIMUM_DAYS }}));
+          const response = await github.request("GET /${{ env.OWNER }}/packages/container/${{ env.PACKAGE }}/versions", {
+            per_page: ${{ env.KEEP_VERSIONS }},
+            page: 2
+          });
+          let deleteCount = 0;
+          for(version of response.data) {
+            const dateUpdated = new Date(version.updated_at);
+            const deleteVersion = (dateUpdated < minimumAge);
+          
+            let message = version.id + " (Last Update: " + version.updated_at + ")";
+            if (deleteVersion) {
+              message = "Deleting " + message;
+              message += " (" + ((version.metadata.container.tags.length > 0) ? "Tags: " + version.metadata.container.tags.join(', ') : "Untagged") + ")";
+              
+              console.log(message);
+              const deleteResponse = await github.request("DELETE /${{ env.OWNER }}/packages/container/${{ env.PACKAGE }}/versions/" + version.id, { });
+              if (deleteResponse.status >= 200 && deleteResponse.status < 300) {
+                console.log("Successfully deleted");
+                deleteCount++;
+              }
+            } else {
+              message = "Skipped " + message;
+              console.log(message);
+            }
+          }
+          console.log("Deleted " + deleteCount + " images");
