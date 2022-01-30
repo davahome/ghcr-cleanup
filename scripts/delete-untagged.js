@@ -3,7 +3,7 @@ const shouldDeleteUntagged = (0 + "${{ inputs.delete_untagged }}") > 0;
 if (!shouldDeleteUntagged) {
     console.log("Delete of untagged images is disabled. Set 'delete_untagged':1 to enable it");
 } else {
-    const keepVersions = 0 + "${{ inputs.keep_untagged_versions }";
+    const keepVersions = 0 + "${{ inputs.keep_untagged_versions }}";
 
     console.log("Checking package ${{ inputs.owner }}/${{ inputs.package_name }} for untagged versions");
     console.log("Keeping (at least) " + keepVersions + " untagged versions");
