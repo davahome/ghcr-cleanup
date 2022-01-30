@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete images older than 14 days (but keep at least 30 versions)
-        uses: DavaHome/ghcr-cleanup@v0.3
+        uses: DavaHome/ghcr-cleanup@v0.4
         with:
           # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
           packages_token: ${{ secrets.PACKAGES_TOKEN }}
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete images older than 7 days (but keep at least 5 versions)
-        uses: DavaHome/ghcr-cleanup@v0.3
+        uses: DavaHome/ghcr-cleanup@v0.4
         with:
           # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
           packages_token: ${{ secrets.PACKAGES_TOKEN }}

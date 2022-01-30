@@ -1,0 +1,14 @@
+{
+    "name": "davahome/ghcr-cleanup",
+    "description": "Builder application",
+    "license": "MIT",
+    "homepage": "https://github.com/DavaHome/ghcr-cleanup",
+    "require": {
+        "php": "^8.0",
+        "symfony/yaml": "^6.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "discard-changes": true
+    }
+}

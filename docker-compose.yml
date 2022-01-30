@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+    action-builder:
+        build:
+            context: build
+        volumes:
+            - ./scripts/:/build/scripts/:ro
+            - ./base.yml:/build/base.yml:ro
+            - ./build.yml:/build/build.yml:ro
+            - ./action.yml:/build/action.yml

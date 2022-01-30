@@ -1,0 +1,40 @@
+name: "ghcr.io Container Cleanup"
+description: 'A GitHub Action that cleans up old ghcr.io Containers'
+branding:
+    icon: 'package'
+    color: 'orange'
+inputs:
+    # Global (for all steps)
+    packages_token:
+        description: 'A github token with the read:packages, write:packages and delete:packages permissions'
+        required: true
+    package_name:
+        description: 'Name of the package (e.g. for "ghcr.io/example/container" the packageName is "container")'
+        required: true
+    owner:
+        description: 'The owner of the package (for regular users this value is always "user" and NOT your name, for organizations this value is "orgs/<Name of Org>")'
+        required: true
+
+    # Delete images
+    keep_versions:
+        description: 'The minimum amount of versions to keep'
+        required: false
+        default: 30
+    minimum_days:
+        description: 'The minimum age (in days) that an image has to be untouched'
+        required: false
+        default: 14
+    skip_tags:
+        description: 'A comma separated list of Tags that should be skipped'
+        required: false
+        default: 'latest,main'
+
+    # Delete untagged images
+    delete_untagged:
+        descriptions: 'Delete all untagged containers (1/0)'
+        required: false
+        default: 0
+    keep_untagged_versions:
+        description: 'The minimum amount of untagged versions to keep'
+        required: false
+        default: 14
