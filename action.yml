@@ -18,8 +18,8 @@ inputs:
   package_name:
     description: 'Name of the package (e.g. for "ghcr.io/example/container" the packageName is "container")'
     required: true
-  owner_name:
-    description: 'Name of the owner (e.g. for "ghcr.io/example/container" the ownerName is "example")'
+  owner:
+    description: 'The owner of the package (for regular users this value is always "user" and NOT your name, for organizations this value is "orgs/<Name of Org>")'
     retuired: true
 runs:
   using: "composite"
@@ -30,7 +30,7 @@ runs:
         KEEP_VERSIONS: ${{ inputs.keep_versions }}
         MINIMUM_DAYS: ${{ inputs.minimum_days }}
         PACKAGE: ${{ inputs.package_name }}
-        OWNER: ${{ inputs.owner_name }}
+        OWNER: ${{ inputs.owner }}
       with:
         github-token: ${{ inputs.packages_token }}
         script: |
