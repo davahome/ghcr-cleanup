@@ -24,8 +24,11 @@ jobs:
           minimum_days: 14
           keep_versions: 30
           package_name: example
-          # Owner name is always "user" (not your name)
-          owner_name: user
+          # Owner is always "user" (not your name)
+          owner: user
+          # Use this if you want to limit your untagged images no matter how old they are
+          #delete_untagged: 1
+          #keep_untagged_versions: 14
 ```
 
 **Delete images of the organization package "ghcr.io/DavaHome/example" that are older than 7 days (but keep at least 5 versions)**
@@ -47,8 +50,11 @@ jobs:
           minimum_days: 7
           keep_versions: 5
           package_name: example
-          # Owner name can be an organization as well (but has to be prefixed with "orgs/" then)
-          owner_name: orgs/DavaHome
+          # Owner can be an organization as well (but has to be prefixed with "orgs/" then)
+          owner: orgs/DavaHome
+          # Use this if you want to limit your untagged images no matter how old they are
+          #delete_untagged: 1
+          #keep_untagged_versions: 14
 ```
 
 ## Token permission requirements
