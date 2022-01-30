@@ -17,14 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete images older than 14 days (but keep at least 30 versions)
-        uses: DavaHome/ghcr-cleanup
+        uses: DavaHome/ghcr-cleanup@v0.2
         with:
           # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
           packages_token: ${{ secrets.PACKAGES_TOKEN }}
           minimum_days: 14
           keep_versions: 30
           package_name: example
-          owner_name: thedava
+          # Owner name is always "user" (not your name)
+          owner_name: user
 ```
 
 **Delete images of the organization package "ghcr.io/DavaHome/example" that are older than 7 days (but keep at least 5 versions)**
@@ -39,13 +40,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete images older than 7 days (but keep at least 5 versions)
-        uses: DavaHome/ghcr-cleanup
+        uses: DavaHome/ghcr-cleanup@v0.2
         with:
           # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
           packages_token: ${{ secrets.PACKAGES_TOKEN }}
           minimum_days: 7
           keep_versions: 5
           package_name: example
+          # Owner name can be an organization as well (but has to be prefixed with "orgs/" then)
           owner_name: orgs/DavaHome
 ```
 
