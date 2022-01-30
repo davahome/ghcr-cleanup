@@ -10,7 +10,7 @@ $config = Yaml::parseFile(__DIR__ . '/build.yml');
 
 // set template base values
 $template = Yaml::parseFile(__DIR__ . '/template.yml');
-$template['uses'] = sprintf('%s@%s', $config['action'], $config['version']);
+$template['uses'] = $config['action'];
 
 // build "runs" yaml tree
 $tree = [

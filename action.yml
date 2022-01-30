@@ -43,7 +43,7 @@ runs:
     using: composite
     steps:
         -   name: 'Delete untagged images from ghcr.io'
-            uses: actions/github-script@v0.4
+            uses: actions/github-script@v3
             with:
                 github-token: '${{ inputs.packages_token }}'
                 script: |
@@ -81,7 +81,7 @@ runs:
                         console.log("Deleted " + deleteCount + " untagged images");
                     }
         -   name: 'Delete images from ghcr.io'
-            uses: actions/github-script@v0.4
+            uses: actions/github-script@v3
             with:
                 github-token: '${{ inputs.packages_token }}'
                 script: |

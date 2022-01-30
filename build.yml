@@ -1,5 +1,4 @@
-version: v0.4
-action: actions/github-script
+action: actions/github-script@v3
 scripts:
     -   name: Delete untagged images from ghcr.io
         path: scripts/delete-untagged.js
