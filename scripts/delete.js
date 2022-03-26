@@ -3,15 +3,22 @@ console.log("Keeping (at least) ${{ inputs.keep_versions }} versions");
 console.log("Will skip images that are older than ${{ inputs.minimum_days }} days");
 console.log("Skipping images with tags ${{ inputs.skip_tags }}");
 
-const skipTags   = "${{ inputs.skip_tags }}".split(',');
-const minimumAge = new Date(new Date().setDate(new Date().getDate() - "${{ inputs.minimum_days }}"));
-const response   = await github.request("GET /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions", {
-    per_page: 0 + "${{ inputs.keep_versions }}",
-    page:     2
+const keepVersions = 0 + "${{ inputs.keep_versions }}";
+const skipTags     = "${{ inputs.skip_tags }}".split(',');
+const minimumAge   = new Date(new Date().setDate(new Date().getDate() - "${{ inputs.minimum_days }}"));
+const response = await github.request("GET /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions", {
+    per_page: 100,
+    page:     1
 });
 
-let deleteCount = 0;
+let versionCount = 0;
+let deleteCount  = 0;
 for (version of response.data) {
+    // skip this version
+    if (++versionCount < keepVersions) {
+        continue;
+    }
+
     const dateUpdated = new Date(version.updated_at);
 
     let message = version.id + " (Last Update: " + version.updated_at + ")";

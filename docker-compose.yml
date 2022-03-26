@@ -4,6 +4,7 @@ services:
     action-builder:
         build:
             context: build
+        restart: "no"
         volumes:
             - ./scripts/:/build/scripts/:ro
             - ./base.yml:/build/base.yml:ro

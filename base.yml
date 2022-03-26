@@ -27,7 +27,7 @@ inputs:
     skip_tags:
         description: 'A comma separated list of Tags that should be skipped'
         required: false
-        default: 'latest,main'
+        default: 'latest'
 
     # Delete untagged images
     delete_untagged:
