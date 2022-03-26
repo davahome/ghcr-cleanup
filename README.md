@@ -34,7 +34,7 @@ To enable this feature set `delete_untagged: 1`
 
 The values for `keep_versions` and `keep_untagged_versions` should not be 100 or greater. Otherwise, this action won't delete anything right now.
 
-## Examples
+## Example
 
 **Delete images of the personal user package "ghcr.io/thedava/example" that are older than 14 days (but keep at least 30 versions)**
 
@@ -60,95 +60,13 @@ jobs:
                     keep_versions: 30
 
                     # Configure cleanup of untagged versions
-                    # Use this if you want to limit your untagged images no matter how old they are
-                    #delete_untagged: 1
-                    #keep_untagged_versions: 14
-```
-
-**Delete all untagged images of the personal user package "ghcr.io/thedava/example"**
-
-```yaml
-name: Cleanup Registry
-on:
-    workflow_dispatch:
-    registry_package:
-
-jobs:
-    delete-images:
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: DavaHome/ghcr-cleanup@v0.4
-                with:
-                    packages_token: ${{ secrets.PACKAGES_TOKEN }} # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
-                    package_name: example
-                    owner: orgs/DavaHome # Owner can be an organization as well (but has to be prefixed with "orgs/" then)
-
-                    # Configure cleanup of untagged versions
                     delete_untagged: 1
-                    keep_untagged_versions: 0
+                    keep_untagged_versions: 14
 ```
 
-**Delete images of the organization package "ghcr.io/DavaHome/example" that are older than 7 days (but keep at least 5 versions)**
+For more examples visit https://github.com/davahome/ghcr-cleanup/tree/main/docs
 
-```yaml
-name: Cleanup Registry
-on:
-    workflow_dispatch:
-    registry_package:
 
-jobs:
-    delete-images:
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: DavaHome/ghcr-cleanup@v0.4
-                with:
-                    packages_token: ${{ secrets.PACKAGES_TOKEN }} # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
-                    package_name: example
-                    owner: orgs/DavaHome # Owner can be an organization as well (but has to be prefixed with "orgs/" then)
-
-                    # Configure cleanup of tagged versions
-                    minimum_days: 7
-                    keep_versions: 5
-
-                    # Configure cleanup of untagged versions
-                    # Use this if you want to limit your untagged images no matter how old they are
-                    #delete_untagged: 1
-                    #keep_untagged_versions: 14
-```
-
-**Use a matrix to delete multiple packaages**
-
-```yaml
-name: Cleanup Registry
-on:
-    workflow_dispatch:
-    registry_package:
-
-jobs:
-    delete-images:
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                package: [ "example-1", "example-2", "example-3" ]
-        steps:
-            -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: DavaHome/ghcr-cleanup@v0.4
-                with:
-                    packages_token: ${{ secrets.PACKAGES_TOKEN }}
-                    package_name: ${{ matrix.package }}
-                    owner: orgs/DavaHome
-
-                    # Configure cleanup of tagged versions
-                    minimum_days: 7
-                    keep_versions: 50
-
-                    # Configure cleanup of untagged versions
-                    delete_untagged: 1
-                    keep_untagged_versions: 5
-```
 
 ## Token permission requirements
 
