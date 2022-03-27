@@ -58,10 +58,12 @@ runs:
             with:
                 github-token: '${{ inputs.token }}'
                 script: |
-                    const path = require('path')
-                    const scriptPath = path.resolve('./ghcr-cleanup/src/delete-untagged.js')
-                    console.log(scriptPath)
-                    await require(scriptPath)({github, context})
+                    const path = require('path');
+                    const scriptPath = path.resolve('./ghcr-cleanup/src/delete-untagged.js');
+                    console.log(scriptPath);
+                    console.log(context);
+                    
+                    await require(scriptPath)({github, context});
 
 
         -   name: 'Delete images from ghcr.io'
@@ -69,7 +71,9 @@ runs:
             with:
                 github-token: '${{ inputs.token }}'
                 script: |
-                    const path = require('path')
-                    const scriptPath = path.resolve('./ghcr-cleanup/src/delete.js')
-                    console.log(scriptPath)
-                    await require(scriptPath)({github, context})
+                    const path = require('path');
+                    const scriptPath = path.resolve('./ghcr-cleanup/src/delete.js');
+                    console.log(scriptPath);
+                    console.log(context);
+                    
+                    await require(scriptPath)({github, context});
