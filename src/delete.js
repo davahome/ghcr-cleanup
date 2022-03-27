@@ -1,4 +1,4 @@
-module.exports = async ({github, inputs}) => {
+module.exports = async ({github, input}) => {
     console.log("Deleting old versions from " + input.owner + "/" + input.package);
     console.log("Keeping (at least) " + input.keep_versions + " versions");
     console.log("Will skip images that are older than ${{ input.minimum_days }} days");

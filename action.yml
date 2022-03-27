@@ -60,9 +60,8 @@ runs:
                 script: |
                     const path = require('path');
                     const scriptPath = path.resolve('./ghcr-cleanup/src/delete-untagged.js');
-                    console.log(scriptPath);
                     
-                    const input=${{ toJson(inputs) }};
+                    const input = ${{ toJson(inputs) }};
                     
                     await require(scriptPath)({github, input});
 
@@ -74,8 +73,7 @@ runs:
                 script: |
                     const path = require('path');
                     const scriptPath = path.resolve('./ghcr-cleanup/src/delete.js');
-                    console.log(scriptPath);
                     
-                    const input=${{ toJson(inputs) }};
+                    const input = ${{ toJson(inputs) }};
                     
                     await require(scriptPath)({github, input});

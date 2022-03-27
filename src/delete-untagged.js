@@ -1,4 +1,4 @@
-module.exports = async ({github, inputs}) => {
+module.exports = async ({github, input}) => {
     const shouldDeleteUntagged = (0 + input.delete_untagged) > 0;
 
     if (!shouldDeleteUntagged) {
