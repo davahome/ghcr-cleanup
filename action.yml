@@ -45,7 +45,12 @@ inputs:
 runs:
     using: composite
     steps:
-        -   uses: actions/checkout@v3
+        -   uses: actions/github-script@v3
+            with:
+                github-token: '${{ inputs.token }}'
+                script: |
+                    console.log(context);
+                    console.log(github);
 
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v3
