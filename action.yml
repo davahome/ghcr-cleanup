@@ -50,6 +50,7 @@ runs:
             with:
                 repository: "davahome/ghcr-cleanup"
                 ref: "remove-building"
+                path: "ghcr-cleanup"
 
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v3
@@ -57,7 +58,7 @@ runs:
             with:
                 github-token: '${{ inputs.token }}'
                 script: |
-                    const script = require('./scripts/delete-untagged.js')
+                    const script = require('./ghcr-cleanup/src/delete-untagged.js')
                     console.log(script({github, context}))
 
 
@@ -66,5 +67,5 @@ runs:
             with:
                 github-token: '${{ inputs.token }}'
                 script: |
-                    const script = require('./scripts/delete.js')
+                    const script = require('./ghcr-cleanup/src/delete.js')
                     console.log(script({github, context}))
