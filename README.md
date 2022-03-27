@@ -49,7 +49,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Delete images older than 14 days (but keep at least 30 versions)
-                uses: DavaHome/ghcr-cleanup@v0.5
+                uses: davahome/ghcr-cleanup@v0.5
                 with:
                     token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: example
