@@ -27,7 +27,7 @@ inputs:
     skip_tags:
         description: 'A comma separated list of Tags that should be skipped'
         required: false
-        default: 'latest,main'
+        default: 'latest'
 
     # Delete untagged images
     delete_untagged:
@@ -93,7 +93,6 @@ runs:
                     const keepVersions = 0 + "${{ inputs.keep_versions }}";
                     const skipTags     = "${{ inputs.skip_tags }}".split(',');
                     const minimumAge   = new Date(new Date().setDate(new Date().getDate() - "${{ inputs.minimum_days }}"));
-
                     const response = await github.request("GET /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions", {
                         per_page: 100,
                         page:     1
