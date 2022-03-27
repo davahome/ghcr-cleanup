@@ -62,7 +62,9 @@ runs:
                     const scriptPath = path.resolve('./ghcr-cleanup/src/delete-untagged.js');
                     console.log(scriptPath);
                     
-                    await require(scriptPath)({github, ${{ toJson(inputs) }}});
+                    const input=${{ toJson(inputs) }};
+                    
+                    await require(scriptPath)({github, input});
 
 
         -   name: 'Delete images from ghcr.io'
@@ -74,4 +76,6 @@ runs:
                     const scriptPath = path.resolve('./ghcr-cleanup/src/delete.js');
                     console.log(scriptPath);
                     
-                    await require(scriptPath)({github, ${{ toJson(inputs) }}});
+                    const input=${{ toJson(inputs) }};
+                    
+                    await require(scriptPath)({github, input});
