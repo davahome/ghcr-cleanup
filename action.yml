@@ -1,14 +1,17 @@
 name: "ghcr.io Container Cleanup"
+
 description: 'A GitHub Action that cleans up old ghcr.io Containers'
+
 branding:
     icon: 'package'
     color: 'orange'
+
 inputs:
     # Global (for all steps)
-    packages_token:
+    token:
         description: 'A github token with the read:packages, write:packages and delete:packages permissions'
         required: true
-    package_name:
+    package:
         description: 'Name of the package (e.g. for "ghcr.io/example/container" the packageName is "container")'
         required: true
     owner:
@@ -19,11 +22,11 @@ inputs:
     keep_versions:
         description: 'The minimum amount of versions to keep'
         required: false
-        default: 30
+        default: '30'
     minimum_days:
         description: 'The minimum age (in days) that an image has to be untouched'
         required: false
-        default: 14
+        default: '14'
     skip_tags:
         description: 'A comma separated list of Tags that should be skipped'
         required: false
@@ -31,105 +34,33 @@ inputs:
 
     # Delete untagged images
     delete_untagged:
-        descriptions: 'Delete all untagged containers (1/0)'
+        description: 'Delete all untagged containers (1/0)'
         required: false
-        default: 0
-    keep_untagged_versions:
+        default: '0'
+    keep_versions_untagged:
         description: 'The minimum amount of untagged versions to keep'
         required: false
-        default: 14
+        default: '14'
 
 runs:
     using: composite
     steps:
+        -   uses: actions/checkout@v3
+
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v3
+            if: inputs.delete_untagged != '0'
             with:
-                github-token: '${{ inputs.packages_token }}'
+                github-token: '${{ inputs.token }}'
                 script: |
-                    const shouldDeleteUntagged = (0 + "${{ inputs.delete_untagged }}") > 0;
+                    const script = require('./scripts/delete-untagged.js')
+                    console.log(script({github, context}))
 
-                    if (!shouldDeleteUntagged) {
-                        console.log("Delete of untagged images is disabled. Set 'delete_untagged':1 to enable it");
-                    } else {
-                        const keepVersions = 0 + "${{ inputs.keep_untagged_versions }}";
 
-                        console.log("Checking package ${{ inputs.owner }}/${{ inputs.package_name }} for untagged versions");
-                        console.log("Keeping (at least) " + keepVersions + " untagged versions");
-
-                        const response = await github.request("GET /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions", {
-                            per_page: 100
-                        });
-
-                        let deleteCount  = 0;
-                        let versionCount = 0;
-                        for (version of response.data) {
-                            const hasTags = version.metadata.container.tags.length !== 0;
-                            if (hasTags) {
-                                continue;
-                            } else if (++versionCount <= keepVersions) {
-                                continue;
-                            }
-
-                            console.log("delete " + version.id + " (Created at: " + version.created_at + ")");
-                            const deleteResponse = await github.request("DELETE /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions/" + version.id, {});
-                            if (deleteResponse.status >= 200 && deleteResponse.status < 300) {
-                                console.log("Successfully deleted");
-                                deleteCount++;
-                            }
-                        }
-                        console.log("Deleted " + deleteCount + " untagged images");
-                    }
         -   name: 'Delete images from ghcr.io'
             uses: actions/github-script@v3
             with:
-                github-token: '${{ inputs.packages_token }}'
+                github-token: '${{ inputs.token }}'
                 script: |
-                    console.log("Deleting old versions from ${{ inputs.owner }}/${{ inputs.package_name }}");
-                    console.log("Keeping (at least) ${{ inputs.keep_versions }} versions");
-                    console.log("Will skip images that are older than ${{ inputs.minimum_days }} days");
-                    console.log("Skipping images with tags ${{ inputs.skip_tags }}");
-
-                    const keepVersions = 0 + "${{ inputs.keep_versions }}";
-                    const skipTags     = "${{ inputs.skip_tags }}".split(',');
-                    const minimumAge   = new Date(new Date().setDate(new Date().getDate() - "${{ inputs.minimum_days }}"));
-                    const response = await github.request("GET /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions", {
-                        per_page: 100,
-                        page:     1
-                    });
-
-                    let versionCount = 0;
-                    let deleteCount  = 0;
-                    for (version of response.data) {
-                        // skip this version
-                        if (++versionCount < keepVersions) {
-                            continue;
-                        }
-
-                        const dateUpdated = new Date(version.updated_at);
-
-                        let message = version.id + " (Last Update: " + version.updated_at + ")";
-                        message += " (" + ((version.metadata.container.tags.length > 0) ? "Tags: " + version.metadata.container.tags.join(', ') : "Untagged") + ")";
-
-                        // image is too young
-                        if (dateUpdated >= minimumAge) {
-                            console.log("Skipping " + message + ": too young");
-                            continue;
-                        }
-
-                        // image has tags (that should be skipped)
-                        if (skipTags.length > 0 && version.metadata.container.tags.length > 0) {
-                            if (version.metadata.container.tags.some(item => skipTags.includes(item))) {
-                                console.log("Skipping " + message + ": contains a skip tag");
-                                continue;
-                            }
-                        }
-
-                        console.log("Deleting " + message);
-                        const deleteResponse = await github.request("DELETE /${{ inputs.owner }}/packages/container/${{ inputs.package_name }}/versions/" + version.id, {});
-                        if (deleteResponse.status >= 200 && deleteResponse.status < 300) {
-                            console.log("Successfully deleted");
-                            deleteCount++;
-                        }
-                    }
-                    console.log("Deleted " + deleteCount + " images");
+                    const script = require('./scripts/delete.js')
+                    console.log(script({github, context}))

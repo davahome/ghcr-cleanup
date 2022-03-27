@@ -21,18 +21,18 @@ To enable this feature set `delete_untagged: 1`
 
 | Parameter                | Feature(s)      | Values                                                                                                                 | Default         |
 |--------------------------|-----------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `packages_token`         | All             | A valid token with the permissions `delete:packages` and `write:packages`                                              | None (required) |
-| `package_name`           | All             | The name of the package itself (e.g. the `package_name` of `thedava/example` would be `example`)                       | None (required) |
+| `token`                  | All             | A valid token with the permissions `delete:packages` and `write:packages`                                              | None (required) |
+| `package`                | All             | The name of the package itself (e.g. the `package` of `thedava/example` would be `example`)                            | None (required) |
 | `owner`                  | All             | `owner` is either `user` (literally) for personal repos or `orgs/<Your Org name>` for organization repos               | None (required) |
 | `keep_versions`          | Delete Tagged   | Minimum amount of versions to keep (these are usually the most recent versions - exact order is defined by GitHub Api) | `30`            |
 | `minimum_days`           | Delete Tagged   | Minimum age (in days) of a tag to be deletable (younger tags will be skipped)                                          | `14`            |
 | `skip_tags`              | Delete Tagged   | A comma separated list of tags to keep (e.g. `latest` or `latest,develop,build-123`)                                   | `latest`        |
 | `delete_untagged`        | Delete Untagged | Set to `1` to enable deletion of untagged packages                                                                     | `0`             |
-| `keep_untagged_versions` | Delete Untagged | Identical to `keep_versions` but this value is only for the deletion of untagged packages                              | `14`            |
+| `keep_versions_untagged` | Delete Untagged | Identical to `keep_versions` but this value is only for the deletion of untagged packages                              | `14`            |
 
 **Restrictions:**
 
-The values for `keep_versions` and `keep_untagged_versions` should not be 100 or greater. Otherwise, this action won't delete anything right now.
+The values for `keep_versions` and `keep_versions_untagged` should not be 100 or greater. Otherwise, this action won't delete anything right now.
 
 ## Example
 
@@ -51,8 +51,8 @@ jobs:
             -   name: Delete images older than 14 days (but keep at least 30 versions)
                 uses: DavaHome/ghcr-cleanup@v0.5
                 with:
-                    packages_token: ${{ secrets.PACKAGES_TOKEN }}
-                    package_name: example
+                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
+                    package: example
                     owner: user
 
                     # Configure cleanup of tagged versions
@@ -61,7 +61,7 @@ jobs:
 
                     # Configure cleanup of untagged versions
                     delete_untagged: 1
-                    keep_untagged_versions: 14
+                    keep_versions_untagged: 14
 ```
 
 For more examples visit https://github.com/davahome/ghcr-cleanup/tree/main/docs

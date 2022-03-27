@@ -1,5 +1,0 @@
-name:
-uses:
-with:
-    github-token: ${{ inputs.packages_token }}
-    script:
