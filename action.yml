@@ -52,20 +52,16 @@ runs:
                 ref: "remove-building"
                 path: "ghcr-cleanup"
 
-        -   shell: bash
-            run: |
-                ls -lah
-                ls -lah ghcr-cleanup/
-                ls -lah ghcr-cleanup/src/
-
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v3
             if: inputs.delete_untagged != '0'
             with:
                 github-token: '${{ inputs.token }}'
                 script: |
-                    const script = require('./ghcr-cleanup/src/delete-untagged.js')
-                    console.log(script({github, context}))
+                    const path = require('path')
+                    const scriptPath = path.resolve('./ghcr-cleanup/src/delete-untagged.js')
+                    console.log(scriptPath)
+                    await require(scriptPath)({github, context})
 
 
         -   name: 'Delete images from ghcr.io'
@@ -73,5 +69,7 @@ runs:
             with:
                 github-token: '${{ inputs.token }}'
                 script: |
-                    const script = require('./ghcr-cleanup/src/delete.js')
-                    console.log(script({github, context}))
+                    const path = require('path')
+                    const scriptPath = path.resolve('./ghcr-cleanup/src/delete.js')
+                    console.log(scriptPath)
+                    await require(scriptPath)({github, context})
