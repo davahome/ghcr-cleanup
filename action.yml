@@ -45,12 +45,11 @@ inputs:
 runs:
     using: composite
     steps:
-        -   uses: actions/github-script@v3
+        -   name: "Checkout the davahome/ghcr-cleanup repo to access scripts"
+            uses: actions/checkout@v3
             with:
-                github-token: '${{ inputs.token }}'
-                script: |
-                    console.log(context);
-                    console.log(github);
+                repository: "davahome/ghcr-cleanup"
+                ref: "remove-building"
 
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v3
