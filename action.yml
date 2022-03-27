@@ -52,6 +52,12 @@ runs:
                 ref: "remove-building"
                 path: "ghcr-cleanup"
 
+        -   shell: bash
+            run: |
+                ls -lah
+                ls -lah ghcr-cleanup/
+                ls -lah ghcr-cleanup/src/
+
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v3
             if: inputs.delete_untagged != '0'
