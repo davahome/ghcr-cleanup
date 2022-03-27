@@ -23,11 +23,11 @@ jobs:
                 package: [ "example-1", "example-2", "example-3" ]
         steps:
             -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: DavaHome/ghcr-cleanup@v0.5
+                uses: davahome/ghcr-cleanup@v1
                 with:
-                    packages_token: ${{ secrets.PACKAGES_TOKEN }}
-                    package_name: ${{ matrix.package }}
-                    owner: orgs/DavaHome
+                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
+                    package: ${{ matrix.package }}
+                    owner: orgs/davahome
 
                     # Configure cleanup of tagged versions
                     minimum_days: 7
@@ -35,7 +35,7 @@ jobs:
 
                     # Configure cleanup of untagged versions
                     delete_untagged: 1
-                    keep_untagged_versions: 5
+                    keep_versions_untagged: 5
 ```
 
 
@@ -69,10 +69,10 @@ jobs:
                       owner: "orgs/organization2"
         steps:
             -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: DavaHome/ghcr-cleanup@v0.5
+                uses: davahome/ghcr-cleanup@v1
                 with:
-                    packages_token: ${{ secrets.PACKAGES_TOKEN }}
-                    package_name: ${{ matrix.package }}
+                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
+                    package: ${{ matrix.package }}
                     owner: ${{ matrix.owner }}
 
                     # Configure cleanup of tagged versions
@@ -81,5 +81,5 @@ jobs:
 
                     # Configure cleanup of untagged versions
                     delete_untagged: 1
-                    keep_untagged_versions: 5
+                    keep_versions_untagged: 5
 ```
