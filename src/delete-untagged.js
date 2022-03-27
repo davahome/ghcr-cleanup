@@ -1,4 +1,6 @@
 module.exports = async ({github, context}) => {
+    console.log(context);
+
     const shouldDeleteUntagged = (0 + context.inputs.delete_untagged) > 0;
 
     if (!shouldDeleteUntagged) {
