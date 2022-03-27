@@ -23,7 +23,7 @@ jobs:
                 package: [ "example-1", "example-2", "example-3" ]
         steps:
             -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: davahome/ghcr-cleanup@v0.5
+                uses: davahome/ghcr-cleanup@v1
                 with:
                     token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: ${{ matrix.package }}
@@ -69,7 +69,7 @@ jobs:
                       owner: "orgs/organization2"
         steps:
             -   name: Delete images older than 7 days (but keep at least 5 versions)
-                uses: davahome/ghcr-cleanup@v0.5
+                uses: davahome/ghcr-cleanup@v1
                 with:
                     token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: ${{ matrix.package }}
