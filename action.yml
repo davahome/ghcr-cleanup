@@ -19,6 +19,10 @@ inputs:
         required: true
 
     # Delete images
+    delete_tagged:
+        description: 'Delete all TAGGED containers (1/0)'
+        required: false
+        default: '1'
     keep_versions:
         description: 'The minimum amount of versions to keep'
         required: false
@@ -68,6 +72,7 @@ runs:
 
         -   name: 'Delete images from ghcr.io'
             uses: actions/github-script@v3
+            if: inputs.delete_tagged != '0'
             with:
                 github-token: '${{ inputs.token }}'
                 script: |

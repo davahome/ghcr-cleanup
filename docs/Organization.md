@@ -16,7 +16,7 @@ jobs:
             -   name: Delete images older than 7 days (but keep at least 5 versions)
                 uses: davahome/ghcr-cleanup@v1
                 with:
-                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }} # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
+                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: example
                     owner: orgs/davahome # Owner can be an organization as well (but has to be prefixed with "orgs/" then)
 
@@ -40,7 +40,7 @@ jobs:
             -   name: Delete images older than 7 days (but keep at least 5 versions)
                 uses: davahome/ghcr-cleanup@v1
                 with:
-                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }} # The regular ${{ GITHUB_TOKEN }} is not enough. Create a separate token and store it as secret
+                    token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: example
                     owner: orgs/davahome # Owner can be an organization as well (but has to be prefixed with "orgs/" then)
 

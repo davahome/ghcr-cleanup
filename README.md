@@ -11,11 +11,11 @@ Actions ([there is no permission "packages: delete"](https://docs.github.com/en/
 
 **Delete tagged**
 
-This feature is enabled by default.
+This feature is enabled by default. To disable this feature set `delete_tagged: 0`
 
 **Delete untagged**
 
-To enable this feature set `delete_untagged: 1`
+This feature is disabled by default. To enable this feature set `delete_untagged: 1`
 
 ## Parameters
 
@@ -24,6 +24,7 @@ To enable this feature set `delete_untagged: 1`
 | `token`                  | All             | A valid token with the permissions `delete:packages` and `write:packages`                                              | None (required) |
 | `package`                | All             | The name of the package itself (e.g. the `package` of `thedava/example` would be `example`)                            | None (required) |
 | `owner`                  | All             | `owner` is either `user` (literally) for personal repos or `orgs/<Your Org name>` for organization repos               | None (required) |
+| `delete_ntagged`         | Delete Tagged   | Set to `0` to disable deletion of tagged packages                                                                      | `1`             |
 | `keep_versions`          | Delete Tagged   | Minimum amount of versions to keep (these are usually the most recent versions - exact order is defined by GitHub Api) | `30`            |
 | `minimum_days`           | Delete Tagged   | Minimum age (in days) of a tag to be deletable (younger tags will be skipped)                                          | `14`            |
 | `skip_tags`              | Delete Tagged   | A comma separated list of tags to keep (e.g. `latest` or `latest,develop,build-123`)                                   | `latest`        |
@@ -36,7 +37,7 @@ The values for `keep_versions` and `keep_versions_untagged` should not be 100 or
 
 ## Example
 
-**Delete images of the personal user package "ghcr.io/thedava/example" that are older than 14 days (but keep at least 30 versions)**
+For more examples visit https://github.com/davahome/ghcr-cleanup/tree/main/docs
 
 ```yaml
 name: Cleanup Registry
@@ -48,12 +49,19 @@ jobs:
     delete-images:
         runs-on: ubuntu-latest
         steps:
-            -   name: Delete images older than 14 days (but keep at least 30 versions)
+            -   name: Delete packages older than 14 days (but keep at least 30 versions)
                 uses: davahome/ghcr-cleanup@v1
                 with:
+                    # The regular ${{ GITHUB_TOKEN }} is not enough because there is no "packages:delete" permission.
+                    # Create a separate token and store it as a secret (see required permissions at the bottom of this README)
                     token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
+                    
+                    # Define the name of the package (e.g. "thedava/example" would be "example")
                     package: example
+                    
+                    # Define the owner (it's either literally "user" or "orgs/<Your Org>")
                     owner: user
+                    #owner: orgs/davahome -- Use this for organization packages
 
                     # Configure cleanup of tagged versions
                     minimum_days: 14
@@ -63,8 +71,6 @@ jobs:
                     delete_untagged: 1
                     keep_versions_untagged: 14
 ```
-
-For more examples visit https://github.com/davahome/ghcr-cleanup/tree/main/docs
 
 
 
