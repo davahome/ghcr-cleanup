@@ -24,7 +24,7 @@ This feature is disabled by default. To enable this feature set `delete_untagged
 | `token`                  | All             | A valid token with the permissions `delete:packages` and `write:packages`                                              | None (required) |
 | `package`                | All             | The name of the package itself (e.g. the `package` of `thedava/example` would be `example`)                            | None (required) |
 | `owner`                  | All             | `owner` is either `user` (literally) for personal repos or `orgs/<Your Org name>` for organization repos               | None (required) |
-| `delete_ntagged`         | Delete Tagged   | Set to `0` to disable deletion of tagged packages                                                                      | `1`             |
+| `delete_tagged`          | Delete Tagged   | Set to `0` to disable deletion of tagged packages                                                                      | `1`             |
 | `keep_versions`          | Delete Tagged   | Minimum amount of versions to keep (these are usually the most recent versions - exact order is defined by GitHub Api) | `30`            |
 | `minimum_days`           | Delete Tagged   | Minimum age (in days) of a tag to be deletable (younger tags will be skipped)                                          | `14`            |
 | `skip_tags`              | Delete Tagged   | A comma separated list of tags to keep (e.g. `latest` or `latest,develop,build-123`)                                   | `latest`        |
