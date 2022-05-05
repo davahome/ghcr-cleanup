@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Delete packages
-                uses: davahome/ghcr-cleanup@v1
+                uses: davahome/ghcr-cleanup@v1.1
                 with:
                     token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: example
@@ -40,7 +40,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Delete packages
-                uses: davahome/ghcr-cleanup@v1
+                uses: davahome/ghcr-cleanup@v1.1
                 with:
                     token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
                     package: example

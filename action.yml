@@ -54,7 +54,7 @@ runs:
             with:
                 repository: "davahome/ghcr-cleanup"
                 path: "ghcr-cleanup"
-                ref: "v1"
+                ref: "v1.1"
 
         -   name: 'Delete untagged images from ghcr.io'
             uses: actions/github-script@v6

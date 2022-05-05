@@ -50,7 +50,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Delete packages older than 14 days (but keep at least 30 versions)
-                uses: davahome/ghcr-cleanup@v1
+                uses: davahome/ghcr-cleanup@v1.1
                 with:
                     # The regular ${{ GITHUB_TOKEN }} is not enough because there is no "packages:delete" permission.
                     # Create a separate token and store it as a secret (see required permissions at the bottom of this README)
