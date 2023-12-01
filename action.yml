@@ -57,7 +57,7 @@ runs:
                 ref: "v1.1"
 
         -   name: 'Delete untagged images from ghcr.io'
-            uses: actions/github-script@v6
+            uses: actions/github-script@v7
             if: inputs.delete_untagged != '0'
             with:
                 github-token: '${{ inputs.token }}'
@@ -71,7 +71,7 @@ runs:
 
 
         -   name: 'Delete images from ghcr.io'
-            uses: actions/github-script@v6
+            uses: actions/github-script@v7
             if: inputs.delete_tagged != '0'
             with:
                 github-token: '${{ inputs.token }}'
