@@ -1,3 +1,14 @@
+# 📦 Archived
+
+This project is no longer actively maintained.
+It was initially created to solve a problem I faced myself - and it worked well enough for that. 
+Since then, better and more complete solutions have appeared. If you're looking for a maintained version, check out:
+
+- [dataaxiom/ghcr-cleanup-action](https://github.com/dataaxiom/ghcr-cleanup-action)
+- [bots-house/ghcr-delete-image-action](https://github.com/bots-house/ghcr-delete-image-action)
+
+-------------
+
 # ghcr-cleanup
 
 A GitHub Action for cleaning up old Containers from ghcr.io
